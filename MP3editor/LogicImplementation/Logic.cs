@@ -15,8 +15,7 @@ namespace LogicImplementation
         /**
          * Fields
          */
-        private List<byte> MP3Header = new List<byte>();
-
+        private List<byte> MP3Bytes = new List<byte>();
 
         public MP3info GetMP3File(string fileName)
         {
@@ -24,7 +23,7 @@ namespace LogicImplementation
             MP3info songInfo = new MP3info();
             
             // Load header in byte array
-            MP3Header = data.loadMP3File(fileName, 10);
+            MP3Bytes = data.loadMP3File(fileName, 10);
 
             /////////////////////////////////////////////
             //
@@ -38,22 +37,28 @@ namespace LogicImplementation
             /////////////////////////////////////////////
 
             // DEBUG
-            foreach (byte b in MP3Header)
+            foreach (byte b in MP3Bytes)
             {
                 Console.Write($"{b:X2} ");
             }
 
             // set version
-            songInfo.MajorVersion = MP3Header[3];
-            songInfo.RevisionNumber = MP3Header[4];
+            songInfo.MajorVersion = MP3Bytes[3];
+            songInfo.RevisionNumber = MP3Bytes[4];
 
             // set flags
-            songInfo.UnsynchronisationFlag = (MP3Header[5] & 0x80) == 0x00 ? false : true;
-            songInfo.ExtendedHeaderFlag = (MP3Header[5] & 0x40) == 0x00 ? false : true;
-            songInfo.ExperimentalIndicatorFlag = (MP3Header[5] & 0x20) == 0x00 ? false : true;
+            songInfo.UnsynchronisationFlag = (MP3Bytes[5] & 0x80) == 0x00 ? false : true;
+            songInfo.ExtendedHeaderFlag = (MP3Bytes[5] & 0x40) == 0x00 ? false : true;
+            songInfo.ExperimentalIndicatorFlag = (MP3Bytes[5] & 0x20) == 0x00 ? false : true;
 
             // tag size
-            songInfo.TagSize = CalculateID3TagSize(new byte[] { MP3Header[6], MP3Header[7], MP3Header[8], MP3Header[9]});
+            songInfo.TagSize = CalculateID3TagSize(new byte[] { MP3Bytes[6], MP3Bytes[7], MP3Bytes[8], MP3Bytes[9]});
+
+            // request further bytes from data layer
+            MP3Bytes = data.loadMP3File(fileName, songInfo.TagSize + 10);
+
+            // debug
+            //WriteBytes();
 
             // return object
             return songInfo;
@@ -70,6 +75,25 @@ namespace LogicImplementation
             }
 
             return totalSize;
+        }
+
+        private void WriteBytes()
+        {
+            int counter = 0;
+            foreach (byte b in MP3Bytes)
+            {
+                if (counter % 10 == 0)
+                {
+                    Console.WriteLine();
+                    Console.Write($" {counter} ");
+                }
+
+                Console.Write($"{b:X2} ");
+
+                counter++;
+
+                
+            }
         }
     }
 }

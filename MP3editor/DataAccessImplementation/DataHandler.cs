@@ -19,12 +19,18 @@ namespace DataAccessImplementation
             {
                 // Set pointer
                 file.Seek(0, SeekOrigin.Begin);
-                   
+
                 // Read number of bytes
-                for(int i = 0; i < numberOfBytes; i++)
+                int i = 0;
+                while( i < numberOfBytes)
                 {
-                    mp3Header.Add((byte) file.ReadByte());
+                    mp3Header.Add((byte)file.ReadByte());
+                    i++;
                 }
+
+                // DEBUG
+                Console.WriteLine();
+                Console.WriteLine($"{numberOfBytes} bytes loaded.");
             }
 
             // return the array
