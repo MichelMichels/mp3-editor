@@ -8,6 +8,6 @@ namespace DataAccessInterface
 {
     public interface IDataHandler
     {
-        List<byte> loadMP3File(string fileName, int numberOfBytes);
+        List<byte> LoadMP3Bytes(string fileName, int numberOfBytes);
     }
 }

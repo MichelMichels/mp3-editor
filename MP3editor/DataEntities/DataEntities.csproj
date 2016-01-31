@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ID3ExtendedHeader.cs" />
+    <Compile Include="ID3Frame.cs" />
+    <Compile Include="ID3Header.cs" />
     <Compile Include="MP3info.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

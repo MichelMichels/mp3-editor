@@ -12,18 +12,14 @@ namespace LogicImplementation
     {
         DataHandler data = new DataHandler();
 
-        /**
-         * Fields
-         */
-        private List<byte> MP3Bytes = new List<byte>();
-
-        public MP3info GetMP3File(string fileName)
+        public MP3info GetSongInfo(string fileName)
         {
-            // Create MP3 var
-            MP3info songInfo = new MP3info();
-            
+            // Create MP3 vars
+            var songWrapper = new MP3info();
+            var songHeader = new ID3Header();
+                                   
             // Load header in byte array
-            MP3Bytes = data.loadMP3File(fileName, 10);
+            var bytes = data.LoadMP3Bytes(fileName, 10);
 
             /////////////////////////////////////////////
             //
@@ -36,32 +32,27 @@ namespace LogicImplementation
             //
             /////////////////////////////////////////////
 
-            // DEBUG
-            foreach (byte b in MP3Bytes)
-            {
-                Console.Write($"{b:X2} ");
-            }
-
             // set version
-            songInfo.MajorVersion = MP3Bytes[3];
-            songInfo.RevisionNumber = MP3Bytes[4];
+            songHeader.MajorVersion = bytes[3];
+            songHeader.RevisionNumber = bytes[4];
 
             // set flags
-            songInfo.UnsynchronisationFlag = (MP3Bytes[5] & 0x80) == 0x00 ? false : true;
-            songInfo.ExtendedHeaderFlag = (MP3Bytes[5] & 0x40) == 0x00 ? false : true;
-            songInfo.ExperimentalIndicatorFlag = (MP3Bytes[5] & 0x20) == 0x00 ? false : true;
+            songHeader.UnsynchronisationFlag = (bytes[5] & 0x80) == 0x00 ? false : true;
+            songHeader.ExtendedHeaderFlag = (bytes[5] & 0x40) == 0x00 ? false : true;
+            songHeader.ExperimentalIndicatorFlag = (bytes[5] & 0x20) == 0x00 ? false : true;
 
             // tag size
-            songInfo.TagSize = CalculateID3TagSize(new byte[] { MP3Bytes[6], MP3Bytes[7], MP3Bytes[8], MP3Bytes[9]});
+            songHeader.TagSize = CalculateID3TagSize(new byte[] { bytes[6], bytes[7], bytes[8], bytes[9] });
+
+            // Add header to MP3info var
+            songWrapper.Header = songHeader;
+            
 
             // request further bytes from data layer
-            MP3Bytes = data.loadMP3File(fileName, songInfo.TagSize + 10);
-
-            // debug
-            //WriteBytes();
+            bytes = data.LoadMP3Bytes(fileName, songHeader.TagSize + 10);
 
             // return object
-            return songInfo;
+            return songWrapper;
         }
 
         private int CalculateID3TagSize(byte[] array)
@@ -77,10 +68,10 @@ namespace LogicImplementation
             return totalSize;
         }
 
-        private void WriteBytes()
+        private void WriteBytes(List<byte> bytes)
         {
             int counter = 0;
-            foreach (byte b in MP3Bytes)
+            foreach (byte b in bytes)
             {
                 if (counter % 10 == 0)
                 {
@@ -91,7 +82,6 @@ namespace LogicImplementation
                 Console.Write($"{b:X2} ");
 
                 counter++;
-
                 
             }
         }

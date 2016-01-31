@@ -37,14 +37,14 @@ namespace GUI
                 string fileName = openFileDialog1.FileName;
 
                 // Write first bytes
-                songInfo = logic.GetMP3File(fileName);
+                songInfo = logic.GetSongInfo(fileName);
 
                 // Write in GUI
-                versionTextBox.Text = $"ID3v2.{songInfo.MajorVersion}.{songInfo.RevisionNumber}";
-                unsynchronizationTextBox.Text = $"{songInfo.UnsynchronisationFlag}";
-                extendedHeaderTextBox.Text = $"{songInfo.ExtendedHeaderFlag}";
-                experimentalTextBox.Text = $"{songInfo.ExperimentalIndicatorFlag}";
-                tagSizeTextBox.Text = $"{songInfo.TagSize} bytes";
+                versionTextBox.Text = $"ID3v2.{songInfo.Header.MajorVersion}.{songInfo.Header.RevisionNumber}";
+                unsynchronizationTextBox.Text = $"{songInfo.Header.UnsynchronisationFlag}";
+                extendedHeaderTextBox.Text = $"{songInfo.Header.ExtendedHeaderFlag}";
+                experimentalTextBox.Text = $"{songInfo.Header.ExperimentalIndicatorFlag}";
+                tagSizeTextBox.Text = $"{songInfo.Header.TagSize} bytes";
 
             }
 

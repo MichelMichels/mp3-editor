@@ -10,7 +10,7 @@ namespace DataAccessImplementation
 {
     public class DataHandler : IDataHandler
     {
-        public List<byte> loadMP3File(string fileName, int numberOfBytes)
+        public List<byte> LoadMP3Bytes(string fileName, int numberOfBytes)
         {
             // Array to store read bytes
             List<byte> mp3Header = new List<byte>();

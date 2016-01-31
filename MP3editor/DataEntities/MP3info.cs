@@ -8,17 +8,33 @@ namespace DataEntities
 {
     public class MP3info
     {
-        // 4th and 5th byte
-        public int MajorVersion { get; set; }
-        public int RevisionNumber { get; set; }
+        // Master byte list
+        public List<byte> MP3Bytes = new List<byte>();
 
-        // 6th byte (abc0 0000)
-        public bool UnsynchronisationFlag { get; set; }
-        public bool ExtendedHeaderFlag { get; set; }
-        public bool ExperimentalIndicatorFlag { get; set; }
+        // Header and or extended header
+        public ID3Header Header { get; set; }
+        public ID3ExtendedHeader ExtendedHeader { get; set; }
 
-        // byte 7, 8, 9, 10
-        // tag size = total tag size - 10
-        public int TagSize { get; set; }
+        // save ID3 frames
+        public List<ID3Frame> Frames = new List<ID3Frame>();
+
+        public MP3info()
+        {
+            Header = new ID3Header();
+            ExtendedHeader = new ID3ExtendedHeader();
+            Frames = new List<ID3Frame>();
+        }
+
+        public MP3info(ID3Header header, List<ID3Frame> frames) {
+            Header = header;
+            this.Frames = frames;
+        }
+
+        public MP3info(ID3Header header, ID3ExtendedHeader extendedHeader, List<ID3Frame> frames)
+        {
+            Header = header;
+            ExtendedHeader = extendedHeader;
+            this.Frames = frames;
+        }
     }
 }
