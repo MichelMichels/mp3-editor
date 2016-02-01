@@ -10,6 +10,14 @@ namespace DataAccessImplementation
 {
     public class DataHandler : IDataHandler
     {
+        // ------
+        // EVENTS
+        // ------
+        public event Action<int> BytesLoaded = (int count) => { };
+
+        // -------
+        // METHODS
+        // -------
         public List<byte> LoadMP3Bytes(string fileName, int numberOfBytes)
         {
             // Array to store read bytes
@@ -20,6 +28,7 @@ namespace DataAccessImplementation
                 // Set pointer
                 file.Seek(0, SeekOrigin.Begin);
 
+                
                 // Read number of bytes
                 int i = 0;
                 while( i < numberOfBytes)
@@ -27,10 +36,11 @@ namespace DataAccessImplementation
                     mp3Header.Add((byte)file.ReadByte());
                     i++;
                 }
-
+                
                 // DEBUG
-                Console.WriteLine();
-                Console.WriteLine($"{numberOfBytes} bytes loaded.");
+                BytesLoaded(numberOfBytes);
+                //Console.WriteLine();
+                //Console.WriteLine($"{numberOfBytes} bytes loaded.");
             }
 
             // return the array

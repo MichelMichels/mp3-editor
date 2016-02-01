@@ -55,6 +55,11 @@ namespace LogicImplementation
             return songWrapper;
         }
 
+        public Logic()
+        {
+            data.BytesLoaded += (int count) => Console.WriteLine($"{count} bytes loaded.");
+        }
+
         private int CalculateID3TagSize(byte[] array)
         {
             // initialize variable
