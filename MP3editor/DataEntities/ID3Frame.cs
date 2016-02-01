@@ -8,6 +8,9 @@ namespace DataEntities
 {
     public class ID3Frame
     {
+        // byte offset
+        public int offset { get; set; }
+
         public string ID { get; set; }
         // frame size - header size = frame size - 10
         public int Size { get; set; }
