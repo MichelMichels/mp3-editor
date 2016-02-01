@@ -19,7 +19,7 @@ namespace LogicImplementation
             var songHeader = new ID3Header();
                                    
             // Load header in byte array
-            var bytes = data.LoadMP3Bytes(fileName, 10);
+            var bytes = data.LoadBytes(fileName, 10);
 
             /////////////////////////////////////////////
             //
@@ -49,7 +49,7 @@ namespace LogicImplementation
             
 
             // request further bytes from data layer
-            bytes = data.LoadMP3Bytes(fileName, songHeader.TagSize + 10);
+            bytes = data.LoadBytes(fileName, songHeader.TagSize + 10);
 
             // return object
             return songWrapper;

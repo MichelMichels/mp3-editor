@@ -18,33 +18,30 @@ namespace DataAccessImplementation
         // -------
         // METHODS
         // -------
-        public List<byte> LoadMP3Bytes(string fileName, int numberOfBytes)
+        public List<byte> LoadBytes(string fileName, int numberOfBytes)
         {
             // Array to store read bytes
-            List<byte> mp3Header = new List<byte>();
+            List<byte> bytes = new List<byte>();
 
             using (var file = File.Open(fileName, FileMode.Open))
             {
                 // Set pointer
                 file.Seek(0, SeekOrigin.Begin);
-
                 
                 // Read number of bytes
                 int i = 0;
                 while( i < numberOfBytes)
                 {
-                    mp3Header.Add((byte)file.ReadByte());
+                    bytes.Add((byte)file.ReadByte());
                     i++;
                 }
                 
                 // DEBUG
                 BytesLoaded(numberOfBytes);
-                //Console.WriteLine();
-                //Console.WriteLine($"{numberOfBytes} bytes loaded.");
             }
 
             // return the array
-            return mp3Header;
+            return bytes;
         }
     }
 }
