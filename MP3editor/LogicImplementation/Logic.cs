@@ -49,10 +49,13 @@ namespace LogicImplementation
             //
             /////////////////////////////////////////////
             try {
+                /*
                 if (new char[(char)bytes[0], (char)bytes[1], (char)bytes[2]] != new char['I', 'D', '3'])
                 {
                     throw (new ArgumentException("File not supported"));
                 }
+                */
+
                 // set version
                 songHeader.MajorVersion = bytes[3];
                 songHeader.RevisionNumber = bytes[4];
