@@ -54,9 +54,6 @@ namespace LogicImplementation
                 var songFrames = GetID3Frames(bytes);
                 songWrapper.Frames = songFrames;
 
-                // Print frame IDs
-                PrintFrames(songWrapper.Frames);
-
                 // return object
                 return songWrapper;
             }
@@ -103,6 +100,11 @@ namespace LogicImplementation
             char[] c = { (char)bytes[start], (char)bytes[start + 1], (char)bytes[start + 2], (char)bytes[start + 3] };
             frame.ID = new string(c);
 
+            if(frame.ID == "\0\0\0\0")
+            {
+                return new ID3Frame();
+            }
+
             // Calculate frame size
             frame.Size = 0;
 
@@ -111,6 +113,25 @@ namespace LogicImplementation
                 frame.Size += bytes[start + 4 + i] << 8 * (3 - i);
             }
 
+            // Get data in an array
+            byte[] data = new byte[frame.Size];
+            for (int i = 0; i < frame.Size; i++)
+            {
+                data[i] = bytes[start + 10 + i];
+            }
+
+            if (data.Length > 33554432)
+            {
+                frame.Data = new byte[0];
+                frame.Size = 0;
+            }
+            else
+            {
+                frame.Data = data;
+                Console.WriteLine(frame);
+            }
+
+            // Return frame
             return frame;
         }
 
@@ -150,16 +171,7 @@ namespace LogicImplementation
                 songFrames.Add(frame);
                 offset += frame.Size + 10;
             }
-
             return songFrames;
-        }
-
-        public void PrintFrames(List<ID3Frame> frames)
-        {
-            foreach(var frame in frames )
-            {
-                Console.WriteLine($"{frame.ID}");
-            }
         }
 
         private bool FileHasID3Tag(List<byte> bytes)
