@@ -12,91 +12,54 @@ namespace LogicImplementation
     {
         DataHandler data = new DataHandler();
 
-        // -------
-        // Events
-        // --------
-        public event Action UnsupportedFile = () => { };
-
-        // -----------
-        // Constructor
-        // -----------
-        public Logic()
-        {
-            // Subscribe to DataHandler events
-            //data.BytesLoaded += (int count) => Console.WriteLine($"{count} bytes loaded.");
-        }
-
         // ---------
         // Methods
         // ---------
-        public MP3info GetSongInfo(string fileName)
+        public MP3Info GetSongInfo(string fileName)
         {
             // Create MP3 vars
-            var songWrapper = new MP3info();
-            var songHeader = new ID3Header();
-            var songFrames = new List<ID3Frame>();
-                                   
-            // Load header in byte array, header = 10 bytes
-            var bytes = data.LoadBytes(fileName, 10);
+            var songWrapper = new MP3Info();
 
-            WriteBytes(bytes);
+            // Check if file has an ID3 tag
+            var bytes = data.LoadBytes(fileName, 3);
+            if (!FileHasID3Tag(bytes))
+            {
+                Console.WriteLine("DEBUG: Not an ID3 tagged file");
+                songWrapper.Header.MajorVersion = 0;
+                songWrapper.Header.RevisionNumber = 0;
 
-            /////////////////////////////////////////////
-            //
-            //      bytes are ordered like this:
-            //      
-            //      XX XX XX YY YY ZZ AA AA AA AA
-            //      0  1  2  3  4  5  6  7  8  9
-            //      
-            //      I  D  3  Mv Rv Fl Size ______
-            //
-            /////////////////////////////////////////////
-            try {
-                // set version
-                songHeader.MajorVersion = bytes[3];
-                songHeader.RevisionNumber = bytes[4];
+                // return empty wrapper
+                return songWrapper;
+            }
+            else
+            {
+                /////////////////////////////////////////////
+                //
+                //      bytes are ordered like this:
+                //      
+                //      XX XX XX YY YY ZZ AA AA AA AA
+                //      0  1  2  3  4  5  6  7  8  9
+                //      
+                //      I  D  3  Mv Rv Fl Size ______
+                //
+                /////////////////////////////////////////////
 
-                // set flags
-                songHeader.UnsynchronisationFlag = (bytes[5] & 0x80) == 0x00 ? false : true;
-                songHeader.ExtendedHeaderFlag = (bytes[5] & 0x40) == 0x00 ? false : true;
-                songHeader.ExperimentalIndicatorFlag = (bytes[5] & 0x20) == 0x00 ? false : true;
-
-                // tag size
-                songHeader.TagSize = CalculateID3TagSize(new byte[] { bytes[6], bytes[7], bytes[8], bytes[9] });
-
-                // DEBUG
-                Console.WriteLine($"[DEBUG] Logic.cs 72");
-                Console.WriteLine($"Tagsize: {songHeader.TagSize}");
-
-                // Add header to MP3info var
+                // Load header
+                bytes = data.LoadBytes(fileName, 10);
+                ID3Header songHeader = GetID3Header(bytes);
                 songWrapper.Header = songHeader;
 
-                // request further bytes from data layer
+                // Request bytes with frames
                 bytes = data.LoadBytes(fileName, songHeader.TagSize + 10);
-
-                // Load all the frames
-                int offset = 10;
-                while( offset < bytes.Count)
-                {
-                    ID3Frame fr = GetID3Frame(bytes, offset);
-                    if (fr.Size == 0) break;
-
-                    songFrames.Add(fr);
-                    offset += fr.Size + 10;
-                }
-
-                PrintFrames(songFrames);
-
+                var songFrames = GetID3Frames(bytes);
                 songWrapper.Frames = songFrames;
+
+                // Print frame IDs
+                PrintFrames(songWrapper.Frames);
 
                 // return object
                 return songWrapper;
-            } catch (ArgumentException ae)
-            {
-                Console.WriteLine($"{ae.Message}");
             }
-
-            return new MP3info();
         }
 
         private int CalculateID3TagSize(byte[] array)
@@ -132,8 +95,11 @@ namespace LogicImplementation
 
         private ID3Frame GetID3Frame(List<byte> bytes, int start)
         {
-            ID3Frame frame = new ID3Frame();
+            // Create a local var
+            var frame = new ID3Frame();
+            frame.Offset = start;
 
+            // Get ID
             char[] c = { (char)bytes[start], (char)bytes[start + 1], (char)bytes[start + 2], (char)bytes[start + 3] };
             frame.ID = new string(c);
 
@@ -148,11 +114,63 @@ namespace LogicImplementation
             return frame;
         }
 
+        private ID3Header GetID3Header(List<byte> bytes)
+        {
+            // Create var
+            var songHeader = new ID3Header();
+            
+            // set version
+            songHeader.MajorVersion = bytes[3];
+            songHeader.RevisionNumber = bytes[4];
+
+            // set flags
+            songHeader.UnsynchronisationFlag = (bytes[5] & 0x80) == 0x00 ? false : true;
+            songHeader.ExtendedHeaderFlag = (bytes[5] & 0x40) == 0x00 ? false : true;
+            songHeader.ExperimentalIndicatorFlag = (bytes[5] & 0x20) == 0x00 ? false : true;
+
+            // tag size
+            songHeader.TagSize = CalculateID3TagSize(new byte[] { bytes[6], bytes[7], bytes[8], bytes[9] });
+
+            // return value
+            return songHeader;
+        }
+
+        private List<ID3Frame> GetID3Frames(List<byte> bytes)
+        {
+            // Load all the frames
+            var songFrames = new List<ID3Frame>();
+
+            // save offset
+            int offset = 10;
+            while (offset < bytes.Count)
+            {
+                ID3Frame frame = GetID3Frame(bytes, offset);
+                if (frame.Size == 0) break;
+
+                songFrames.Add(frame);
+                offset += frame.Size + 10;
+            }
+
+            return songFrames;
+        }
+
         public void PrintFrames(List<ID3Frame> frames)
         {
             foreach(var frame in frames )
             {
                 Console.WriteLine($"{frame.ID}");
+            }
+        }
+
+        private bool FileHasID3Tag(List<byte> bytes)
+        {
+            // Check if first 3 bytes spell ID3
+            if ((char)bytes[0] == 'I' && (char)bytes[1] == 'D' && (char)bytes[2] == '3')
+            {
+                return true;
+            } else
+            {
+                return false;
             }
         }
     }

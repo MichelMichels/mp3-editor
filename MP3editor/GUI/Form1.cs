@@ -31,7 +31,7 @@ namespace GUI
             if(openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 // song var
-                MP3info songInfo = new MP3info();
+                MP3Info songInfo = new MP3Info();
                 
                 // Get filename of selected file
                 string fileName = openFileDialog1.FileName;

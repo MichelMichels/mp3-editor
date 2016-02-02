@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataEntities
 {
-    public class MP3info
+    public class MP3Info
     {
         // Master byte list
         public List<byte> MP3Bytes = new List<byte>();
@@ -18,19 +18,19 @@ namespace DataEntities
         // save ID3 frames
         public List<ID3Frame> Frames = new List<ID3Frame>();
 
-        public MP3info()
+        public MP3Info()
         {
             Header = new ID3Header();
             ExtendedHeader = new ID3ExtendedHeader();
             Frames = new List<ID3Frame>();
         }
 
-        public MP3info(ID3Header header, List<ID3Frame> frames) {
+        public MP3Info(ID3Header header, List<ID3Frame> frames) {
             Header = header;
             this.Frames = frames;
         }
 
-        public MP3info(ID3Header header, ID3ExtendedHeader extendedHeader, List<ID3Frame> frames)
+        public MP3Info(ID3Header header, ID3ExtendedHeader extendedHeader, List<ID3Frame> frames)
         {
             Header = header;
             ExtendedHeader = extendedHeader;
