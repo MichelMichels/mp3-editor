@@ -42,8 +42,6 @@ namespace DataEntities
          */
         public ID3Tag()
         {
-            Header = new ID3Header();
-            ExtendedHeader = new ID3ExtendedHeader();
             Frames = new List<ID3Frame>();
         }
 
@@ -52,7 +50,7 @@ namespace DataEntities
          */
         public bool HasID3Identifier()
         {
-            if(Bytes[0] == 49 && Bytes[1] == 44 && Bytes[2] == 33)
+            if(Bytes[0] == 0x49 && Bytes[1] == 0x44 && Bytes[2] == 0x33)
             {
                 return true;
             } else

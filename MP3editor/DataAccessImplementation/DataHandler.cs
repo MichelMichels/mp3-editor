@@ -26,7 +26,7 @@ namespace DataAccessImplementation
             using (var file = new BinaryReader(File.OpenRead(fileName)))
             {
                 // Read number of bytes
-                file.ReadBytes(numberOfBytes);
+                bytes = file.ReadBytes(numberOfBytes);
             }
 
             // return the array
