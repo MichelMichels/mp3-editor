@@ -8,6 +8,6 @@ namespace DataAccessInterface
 {
     public interface IDataHandler
     {
-        List<byte> LoadBytes(string fileName, int numberOfBytes);
+        byte[] GetID3TagBytes(string fileName, int numberOfBytes);
     }
 }

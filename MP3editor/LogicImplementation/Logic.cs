@@ -11,17 +11,37 @@ namespace LogicImplementation
     public class Logic
     {
         DataHandler data = new DataHandler();
+        const int HEADER_LENGTH = 10;
 
         // ---------
         // Methods
         // ---------
-        public MP3Info GetSongInfo(string fileName)
+        public ID3Tag GetID3Tag(string fileName)
         {
+            // Create ID3 tag var
+            var tag = new ID3Tag();
+
+            // Check ID3 identifier
+            tag.Bytes = data.GetID3TagBytes(fileName, 3);
+            if(!tag.HasID3Identifier())
+            {
+                return new ID3Tag();
+            }
+
+            // Load Header bytes into Tag (10 bytes)
+            tag.Bytes = data.GetID3TagBytes(fileName, 10);
+            tag.Header = new ID3Header(tag.Bytes);
+
+            // Load Header + All frames
+            tag.Bytes = data.GetID3TagBytes(fileName, 10 + tag.Header.TagSize);
+
+
+            
             // Create MP3 vars
-            var songWrapper = new MP3Info();
+            var songWrapper = new ID3Tag();
 
             // Check if file has an ID3 tag
-            var bytes = data.LoadBytes(fileName, 3);
+            var bytes = data.GetID3TagBytes(fileName, 3);
             if (!FileHasID3Tag(bytes))
             {
                 Console.WriteLine("DEBUG: Not an ID3 tagged file");
@@ -45,31 +65,18 @@ namespace LogicImplementation
                 /////////////////////////////////////////////
 
                 // Load header
-                bytes = data.LoadBytes(fileName, 10);
+                bytes = data.GetID3TagBytes(fileName, 10);
                 ID3Header songHeader = GetID3Header(bytes);
                 songWrapper.Header = songHeader;
 
                 // Request bytes with frames
-                bytes = data.LoadBytes(fileName, songHeader.TagSize + 10);
+                bytes = data.GetID3TagBytes(fileName, songHeader.TagSize + 10);
                 var songFrames = GetID3Frames(bytes);
                 songWrapper.Frames = songFrames;
 
                 // return object
                 return songWrapper;
             }
-        }
-
-        private int CalculateID3TagSize(byte[] array)
-        {
-            // initialize variable
-            int totalSize = 0;
-
-            for(int i = 0; i < 4; i++)
-            {
-                totalSize += array[3 - i] << 7 * i;
-            }
-
-            return totalSize;
         }
 
         private void WriteBytes(List<byte> bytes)

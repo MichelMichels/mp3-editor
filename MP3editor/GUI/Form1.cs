@@ -31,13 +31,13 @@ namespace GUI
             if(openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 // song var
-                MP3Info songInfo = new MP3Info();
+                ID3Tag songInfo = new ID3Tag();
                 
                 // Get filename of selected file
                 string fileName = openFileDialog1.FileName;
 
                 // Write first bytes
-                songInfo = logic.GetSongInfo(fileName);
+                songInfo = logic.GetID3Tag(fileName);
 
                 // Write in GUI
                 versionTextBox.Text = $"ID3v2.{songInfo.Header.MajorVersion}.{songInfo.Header.RevisionNumber}";

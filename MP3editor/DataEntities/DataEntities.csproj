@@ -43,7 +43,7 @@
     <Compile Include="ID3ExtendedHeader.cs" />
     <Compile Include="ID3Frame.cs" />
     <Compile Include="ID3Header.cs" />
-    <Compile Include="MP3Info.cs" />
+    <Compile Include="ID3Tag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
