@@ -112,7 +112,7 @@ namespace LogicImplementation
 
         private List<ID3Frame> GetID3Frames(byte[] bytes)
         {
-            // Load all the frames
+            // Create a List var
             var frames = new List<ID3Frame>();
 
             // Save offset

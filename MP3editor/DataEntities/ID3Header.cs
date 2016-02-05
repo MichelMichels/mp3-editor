@@ -60,6 +60,5 @@ namespace DataEntities
 
             return totalSize;
         }
-
     }
 }

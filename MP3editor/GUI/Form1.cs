@@ -39,17 +39,23 @@ namespace GUI
                 // Write first bytes
                 tag = logic.GetID3Tag(fileName);
 
-                tag.PrintFrames();
-
                 // Write in GUI
-                versionTextBox.Text = $"ID3v2.{tag.Header.MajorVersion}.{tag.Header.RevisionNumber}";
-                unsynchronizationTextBox.Text = $"{tag.Header.UnsynchronisationFlag}";
-                extendedHeaderTextBox.Text = $"{tag.Header.ExtendedHeaderFlag}";
-                experimentalTextBox.Text = $"{tag.Header.ExperimentalIndicatorFlag}";
-                tagSizeTextBox.Text = $"{tag.Header.TagSize} bytes";
+                WriteInfo(tag);
+            }
+        }
+
+        private void WriteInfo(ID3Tag tag)
+        {
+            versionTextBox.Text = $"ID3v2.{tag.Header.MajorVersion}.{tag.Header.RevisionNumber}";
+            unsynchronizationTextBox.Text = $"{tag.Header.UnsynchronisationFlag}";
+            extendedHeaderTextBox.Text = $"{tag.Header.ExtendedHeaderFlag}";
+            experimentalTextBox.Text = $"{tag.Header.ExperimentalIndicatorFlag}";
+            tagSizeTextBox.Text = $"{tag.Header.TagSize} bytes";
+
+            foreach (ID3Frame frame in tag.Frames)
+            {
 
             }
-
         }
 
         private void label4_Click(object sender, EventArgs e)

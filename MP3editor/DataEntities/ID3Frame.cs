@@ -85,6 +85,7 @@ namespace DataEntities
      * WXXX     [#WXXX User defined URL link frame]
      */
 
+
     public class ID3Frame
     {
         // Fields
@@ -102,23 +103,109 @@ namespace DataEntities
         public int Size { get; set; }
         public byte[] Flags { get; set; }
 
-        public byte[] Data { get; set; }
+        public byte[] Data {
+            set {
+                _data = new byte[value.Length];
+                _data = value;
+            }
+        }
 
         private string GetDataString()
         {
-            char[] c = new char[Data.Length - 1];
-
-            for (int i = 0; i < Data.Length - 1; i++)
+            if(_data[0] == 0x00)
             {
-                c[i] = (char)Data[i+1];
-            }
+                // ISO-8859-1 text encoding
+                Console.WriteLine();
+                Console.WriteLine($"DEBUG (ID3Frame.cs) ISO-8859-1 encoding");
 
-            return new string(c);
+                // var for our data string
+                var stringChars = new char[_data.Length - 1];
+
+                // Iterate our _data byte array
+                int i = 0;
+                while(i < stringChars.Length)
+                {
+                    // Check for zero bytes
+                    if (_data[i + 1] != 0x00)
+                    {
+                        stringChars[i] = (char)_data[i + 1]; 
+                    } else
+                    {
+                        // Change zero byte to space for the moment
+                        stringChars[i] = ' ';
+                    }
+
+                    i++;
+                }
+
+                // Return the string
+                return new string(stringChars);
+                
+            }
+            else if (_data[0] == 0x01)
+            {
+                // Unicode text encoding
+                Console.WriteLine();
+                Console.WriteLine($"DEBUG (ID3Frame.cs) Unicode encoding");
+
+                // var for our data string
+                var stringChars = new char[_data.Length - 1];
+
+                // Iterate our _data byte array
+                int i = 0;
+                while (i < stringChars.Length)
+                {
+                    // Check for zero bytes
+                    if (_data[i + 1] != 0x00)
+                    {
+                        stringChars[i] = (char)_data[i + 1];
+                    }
+                    else
+                    {
+                        // Change zero byte to space for the moment
+                        stringChars[i] = ' ';
+                    }
+
+                    i++;
+                }
+
+                // Return the string
+                return new string(stringChars);
+            } else
+            {
+                // Encoding not specified
+                Console.WriteLine();
+                Console.WriteLine($"DEBUG (ID3Frame.cs) Text encoding not specified.");
+
+                // var for our data string
+                var stringChars = new char[_data.Length];
+
+                // Iterate our _data byte array
+                int i = 0;
+                while (i < stringChars.Length)
+                {
+                    // Check for zero bytes
+                    if (_data[i] != 0x00)
+                    {
+                        stringChars[i] = (char)_data[i];
+                    }
+                    else
+                    {
+                        // Change zero byte to space for the moment
+                        stringChars[i] = ' ';
+                    }
+
+                    i++;
+                }
+
+                // Return the string
+                return new string(stringChars);
+            }
         }
 
         public void PrintDataBytes()
         {
-            foreach(byte b in Data)
+            foreach(byte b in _data)
             {
                 Console.Write($"{b:X2} ");
             }
