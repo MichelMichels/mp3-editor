@@ -110,7 +110,7 @@ namespace DataEntities
             }
         }
 
-        private string GetDataString()
+        public string GetDataString()
         {
             if(_data[0] == 0x00)
             {

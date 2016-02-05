@@ -54,11 +54,19 @@ namespace GUI
 
             foreach (ID3Frame frame in tag.Frames)
             {
-
+                // Row item
+                string[] frameString = { frame.ID, frame.GetDataString() };
+                var lvi = new ListViewItem(frameString);
+                listView1.Items.Add(lvi);
             }
         }
 
         private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

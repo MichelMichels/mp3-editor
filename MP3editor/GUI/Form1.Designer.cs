@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
             this.selectMP3Button = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.label2 = new System.Windows.Forms.Label();
@@ -43,15 +42,16 @@
             this.tagSizeTextBox = new System.Windows.Forms.TextBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.frameID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Data = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.data = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // selectMP3Button
             // 
-            this.selectMP3Button.Location = new System.Drawing.Point(14, 352);
+            this.selectMP3Button.Location = new System.Drawing.Point(300, 588);
             this.selectMP3Button.Margin = new System.Windows.Forms.Padding(0);
             this.selectMP3Button.Name = "selectMP3Button";
-            this.selectMP3Button.Size = new System.Drawing.Size(332, 35);
+            this.selectMP3Button.Size = new System.Drawing.Size(321, 35);
             this.selectMP3Button.TabIndex = 0;
             this.selectMP3Button.Text = "Select MP3 file";
             this.selectMP3Button.UseVisualStyleBackColor = true;
@@ -78,7 +78,7 @@
             this.versionTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.versionTextBox.Name = "versionTextBox";
             this.versionTextBox.ReadOnly = true;
-            this.versionTextBox.Size = new System.Drawing.Size(163, 26);
+            this.versionTextBox.Size = new System.Drawing.Size(441, 26);
             this.versionTextBox.TabIndex = 3;
             // 
             // label3
@@ -118,7 +118,7 @@
             this.unsynchronizationTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.unsynchronizationTextBox.Name = "unsynchronizationTextBox";
             this.unsynchronizationTextBox.ReadOnly = true;
-            this.unsynchronizationTextBox.Size = new System.Drawing.Size(163, 26);
+            this.unsynchronizationTextBox.Size = new System.Drawing.Size(441, 26);
             this.unsynchronizationTextBox.TabIndex = 7;
             // 
             // extendedHeaderTextBox
@@ -127,7 +127,7 @@
             this.extendedHeaderTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.extendedHeaderTextBox.Name = "extendedHeaderTextBox";
             this.extendedHeaderTextBox.ReadOnly = true;
-            this.extendedHeaderTextBox.Size = new System.Drawing.Size(163, 26);
+            this.extendedHeaderTextBox.Size = new System.Drawing.Size(441, 26);
             this.extendedHeaderTextBox.TabIndex = 8;
             // 
             // experimentalTextBox
@@ -136,7 +136,7 @@
             this.experimentalTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.experimentalTextBox.Name = "experimentalTextBox";
             this.experimentalTextBox.ReadOnly = true;
-            this.experimentalTextBox.Size = new System.Drawing.Size(163, 26);
+            this.experimentalTextBox.Size = new System.Drawing.Size(442, 26);
             this.experimentalTextBox.TabIndex = 9;
             // 
             // label1
@@ -155,36 +155,47 @@
             this.tagSizeTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tagSizeTextBox.Name = "tagSizeTextBox";
             this.tagSizeTextBox.ReadOnly = true;
-            this.tagSizeTextBox.Size = new System.Drawing.Size(163, 26);
+            this.tagSizeTextBox.Size = new System.Drawing.Size(441, 26);
             this.tagSizeTextBox.TabIndex = 11;
             // 
             // listView1
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.frameID,
-            this.Data});
-            this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
-            this.listView1.Location = new System.Drawing.Point(22, 218);
+            this.data});
+            this.listView1.Location = new System.Drawing.Point(22, 240);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(321, 97);
+            this.listView1.Size = new System.Drawing.Size(600, 319);
             this.listView1.TabIndex = 12;
             this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.List;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
             // frameID
             // 
-            this.frameID.Text = "Frame ID";
+            this.frameID.Text = "ID";
+            this.frameID.Width = 53;
             // 
-            // Data
+            // data
             // 
-            this.Data.Text = "Data";
+            this.data.Text = "Data";
+            this.data.Width = 262;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(18, 217);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(85, 20);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Frame info";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(358, 402);
+            this.ClientSize = new System.Drawing.Size(634, 632);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.tagSizeTextBox);
             this.Controls.Add(this.label1);
@@ -221,7 +232,8 @@
         private System.Windows.Forms.TextBox tagSizeTextBox;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader frameID;
-        private System.Windows.Forms.ColumnHeader Data;
+        private System.Windows.Forms.ColumnHeader data;
+        private System.Windows.Forms.Label label6;
     }
 }
 
