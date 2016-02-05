@@ -59,5 +59,15 @@ namespace DataEntities
             }
         }
 
+        public void PrintFrames()
+        {
+            foreach(ID3Frame frame in Frames)
+            {
+                Console.WriteLine(frame);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine();
+        }
     }
 }

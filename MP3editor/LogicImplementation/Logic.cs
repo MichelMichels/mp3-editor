@@ -19,6 +19,7 @@ namespace LogicImplementation
          * Constants
          */
         private const int HEADER_LENGTH = 10;
+        private const int FRAME_HEADER_LENGTH = 10;
 
         /**
          * Methods
@@ -54,7 +55,7 @@ namespace LogicImplementation
             return tag; 
         }
 
-        private void WriteBytes(List<byte> bytes)
+        private void DebugWriteBytes(byte[] bytes)
         {
             int counter = 0;
             foreach (byte b in bytes)
@@ -87,7 +88,7 @@ namespace LogicImplementation
                 return new ID3Frame();
             }
 
-            // Calculate frame size
+            // Calculate frame size and add to frame var
             frame.Size = 0;
 
             for (int i = 0; i < 4; i++)
@@ -102,16 +103,8 @@ namespace LogicImplementation
                 data[i] = bytes[start + 10 + i];
             }
 
-            if (data.Length > 33554432)
-            {
-                frame.Data = new byte[0];
-                frame.Size = 0;
-            }
-            else
-            {
-                frame.Data = data;
-                Console.WriteLine(frame);
-            }
+            // Add data array to frame var
+            frame.Data = data;
 
             // Return frame
             return frame;
@@ -123,14 +116,14 @@ namespace LogicImplementation
             var frames = new List<ID3Frame>();
 
             // Save offset
-            int offset = 10;
+            int offset = HEADER_LENGTH;
             while (offset < bytes.Length)
             {
                 ID3Frame frame = GetID3Frame(bytes, offset);
                 if (frame.Size == 0) break;
 
                 frames.Add(frame);
-                offset += frame.Size + 10;
+                offset += FRAME_HEADER_LENGTH + frame.Size;
             }
             return frames;
         }

@@ -31,20 +31,22 @@ namespace GUI
             if(openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 // song var
-                ID3Tag songInfo = new ID3Tag();
+                ID3Tag tag = new ID3Tag();
                 
                 // Get filename of selected file
                 string fileName = openFileDialog1.FileName;
 
                 // Write first bytes
-                songInfo = logic.GetID3Tag(fileName);
+                tag = logic.GetID3Tag(fileName);
+
+                tag.PrintFrames();
 
                 // Write in GUI
-                versionTextBox.Text = $"ID3v2.{songInfo.Header.MajorVersion}.{songInfo.Header.RevisionNumber}";
-                unsynchronizationTextBox.Text = $"{songInfo.Header.UnsynchronisationFlag}";
-                extendedHeaderTextBox.Text = $"{songInfo.Header.ExtendedHeaderFlag}";
-                experimentalTextBox.Text = $"{songInfo.Header.ExperimentalIndicatorFlag}";
-                tagSizeTextBox.Text = $"{songInfo.Header.TagSize} bytes";
+                versionTextBox.Text = $"ID3v2.{tag.Header.MajorVersion}.{tag.Header.RevisionNumber}";
+                unsynchronizationTextBox.Text = $"{tag.Header.UnsynchronisationFlag}";
+                extendedHeaderTextBox.Text = $"{tag.Header.ExtendedHeaderFlag}";
+                experimentalTextBox.Text = $"{tag.Header.ExperimentalIndicatorFlag}";
+                tagSizeTextBox.Text = $"{tag.Header.TagSize} bytes";
 
             }
 
