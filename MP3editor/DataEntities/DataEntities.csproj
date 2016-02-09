@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums.cs" />
     <Compile Include="ID3ExtendedHeader.cs" />
     <Compile Include="ID3Frame.cs" />
     <Compile Include="ID3Header.cs" />

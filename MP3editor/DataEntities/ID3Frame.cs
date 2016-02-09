@@ -85,9 +85,56 @@ namespace DataEntities
      * WXXX     [#WXXX User defined URL link frame]
      */
 
-
     public class ID3Frame
     {
+        public static Dictionary<string, string> LongIDs = new Dictionary<string, string>()
+        {
+            { "AENC", "Audio encryption" },
+            { "APIC", "Attached picture" },
+            { "COMM", "Comments" },
+            { "COMR", "Commercial frame" },
+            { "ENCR", "Encryption method registration" },
+            { "EQUA", "Equalization" },
+            { "ETCO", "Event timing codes" },
+            { "GEOB", "General encapsulated object" },
+            { "GRID", "Group identification registration" },
+            { "IPLS", "Involved people list" },
+            { "LINK", "Linked information" },
+            { "MCDI", "Music CD identifier" },
+            { "MLLT", "MPEG location lookup table" },
+            { "OWNE", "Ownership frame" },
+            { "PRIV", "Private frame" },
+            { "PCNT", "Play counter" },
+            { "POPM", "Popularimeter" },
+            { "POSS", "Position synchronisation frame" },
+            { "RBUF", "Recommended buffer size" },
+            { "RVAD", "Relative volume adjustment" },
+            { "RVRB", "Reverb" },
+            { "SYLT", "Synchronized lyric/text" },
+            { "SYTC", "Synchronized tempo codes" },
+            { "TALB", "Album/Movie/Show title" },
+            { "TBPM", "BPM (beats per minute)" },
+            { "TCOM", "Composer" },
+            { "TCON", "Content type" },
+            { "TCOP", "Copyright message" },
+            { "TDAT", "Date" },
+            { "TDLY", "Playlist delay" },
+            { "TENC", "Encoded by" },
+            { "TEXT", "Lyricist/Text writer" },
+            { "TFLT", "File type" },
+            { "TIME", "Time" },
+            { "TIT1", "Content group description" },
+            { "TIT2", "Title/songname/content description" },
+            { "TIT3", "Subtitle/Description refinement" },
+            { "TKEY", "Initial key" },
+            { "TLAN", "Language(s)" },
+            { "TLEN", "Length" },
+            { "TMED", "Media type" },
+            { "TOAL", "Original " },
+
+
+        };
+
         // Fields
         private int _offset;
         private string _id;
