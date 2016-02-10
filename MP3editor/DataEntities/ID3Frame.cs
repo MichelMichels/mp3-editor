@@ -87,7 +87,7 @@ namespace DataEntities
 
     public class ID3Frame
     {
-        public static Dictionary<string, string> LongIDs = new Dictionary<string, string>()
+        private readonly Dictionary<string, string> LongIDs = new Dictionary<string, string>()
         {
             { "AENC", "Audio encryption" },
             { "APIC", "Attached picture" },
@@ -130,9 +130,37 @@ namespace DataEntities
             { "TLAN", "Language(s)" },
             { "TLEN", "Length" },
             { "TMED", "Media type" },
-            { "TOAL", "Original " },
-
-
+            { "TOAL", "Original album/movie/show title" },
+            { "TOFN", "Original filename" },
+            { "TOLY", "Original lyricists(s)/text writer(s)" },
+            { "TOPE", "Original artist(s)/performer(s)" },
+            { "TORY", "Original release year" },
+            { "TOWN", "File owner/licensee" },
+            { "TPE1", "Lead performer(s)/Soloist(s)" },
+            { "TPE2", "Band/orchestra/accompaniment" },
+            { "TPE3", "Conductor/performer refinement" },
+            { "TPE4", "Interpreted, remixed or otherwise modified by" },
+            { "TPOS", "Part of a set" },
+            { "TPUB", "Publisher" },
+            { "TRCK", "Track number/Position in set" },
+            { "TRDA", "Recording dates" },
+            { "TRSN", "Internet radio station name" },
+            { "TRSO", "Internet radio station owner" },
+            { "TSIZ", "Size" },
+            { "TSRC", "ISRC (International standard recording code)" },
+            { "TSSE", "Software/Hardware and settings used for encoding" },
+            { "TYER", "Year" },
+            { "UFID", "Unique file identifier" },
+            { "USER", "Terms of use" },
+            { "USLT", "Unsynchronized lyric/text transcription" },
+            { "WCOM", "Commercial information" },
+            { "WCOP", "Copyright/Legal information" },
+            { "WOAF", "Official audio file webpage" },
+            { "WOAR", "Official artist/performer webpage" },
+            { "WOAS", "Official audio source webpage" },
+            { "WORS", "Official internet radio station homepage" },
+            { "WPAY", "Payment" },
+            { "WPUB", "Publishers official webpage" },
         };
 
         // Fields
