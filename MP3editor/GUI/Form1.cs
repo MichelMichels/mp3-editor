@@ -46,16 +46,20 @@ namespace GUI
 
         private void WriteInfo(ID3Tag tag)
         {
+            // Clear listview box
+            listView1.Items.Clear();
+
             versionTextBox.Text = $"ID3v2.{tag.Header.MajorVersion}.{tag.Header.RevisionNumber}";
             unsynchronizationTextBox.Text = $"{tag.Header.UnsynchronisationFlag}";
             extendedHeaderTextBox.Text = $"{tag.Header.ExtendedHeaderFlag}";
             experimentalTextBox.Text = $"{tag.Header.ExperimentalIndicatorFlag}";
             tagSizeTextBox.Text = $"{tag.Header.TagSize} bytes";
 
+
             foreach (ID3Frame frame in tag.Frames)
             {
                 // Row item
-                string[] frameString = { frame.ID, frame.GetDataString() };
+                string[] frameString = { frame.LongID != null ? frame.LongID : "", frame.GetDataString(), frame.ID };
                 var lvi = new ListViewItem(frameString);
                 listView1.Items.Add(lvi);
             }

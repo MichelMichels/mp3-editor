@@ -83,6 +83,7 @@ namespace LogicImplementation
             char[] c = { (char)bytes[start], (char)bytes[start + 1], (char)bytes[start + 2], (char)bytes[start + 3] };
             frame.ID = new string(c);
 
+            // Check if tag hasn't ended
             if(frame.ID == "\0\0\0\0")
             {
                 return new ID3Frame();

@@ -166,6 +166,7 @@ namespace DataEntities
         // Fields
         private int _offset;
         private string _id;
+        private string _longID;
         private int _size;
         private byte[] _flags;
         private byte[] _data;
@@ -173,7 +174,24 @@ namespace DataEntities
         // byte offset
         public int Offset { get; set; }
 
-        public string ID { get; set; }
+        public string ID {
+            get
+            {
+                return _id;
+            }
+            set {
+                // Set field value
+                _id = value;
+                if (LongIDs.ContainsKey(value)) _longID = LongIDs[value];
+            }
+        }
+
+        public string LongID {
+            get {
+                return _longID;
+            }
+        }
+
         // frame size - header size = frame size - 10
         public int Size { get; set; }
         public byte[] Flags { get; set; }
