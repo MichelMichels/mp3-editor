@@ -32,5 +32,17 @@ namespace DataAccessImplementation
             // return the array
             return bytes;
         }
+
+        public void WriteID3Tag(string fileName, byte[] bytes)
+        {
+            using (var file = new BinaryWriter(File.OpenWrite(fileName)))
+            {
+                // Set pointer to begin of file
+                file.Seek(0, SeekOrigin.Begin);
+
+                // Write bytes
+                file.Write(bytes);
+            }
+        }
     }
 }
