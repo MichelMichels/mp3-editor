@@ -49,13 +49,14 @@ namespace GUI
             // Clear listview box
             listView1.Items.Clear();
 
+            // Write info to text boxes
             versionTextBox.Text = $"ID3v2.{tag.Header.MajorVersion}.{tag.Header.RevisionNumber}";
             unsynchronizationTextBox.Text = $"{tag.Header.UnsynchronisationFlag}";
             extendedHeaderTextBox.Text = $"{tag.Header.ExtendedHeaderFlag}";
             experimentalTextBox.Text = $"{tag.Header.ExperimentalIndicatorFlag}";
             tagSizeTextBox.Text = $"{tag.Header.TagSize} bytes";
 
-
+            // Iterate all the frames
             foreach (ID3Frame frame in tag.Frames)
             {
                 // Row item
