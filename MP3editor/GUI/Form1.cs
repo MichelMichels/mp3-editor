@@ -26,43 +26,22 @@ namespace GUI
 
         }
 
-        private void selectMP3Button_click (object sender, EventArgs e)
+        private void PrintInfo(ID3Tag tag)
         {
-            if(openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                // song var
-                ID3Tag tag = new ID3Tag();
-                
-                // Get filename of selected file
-                string fileName = openFileDialog1.FileName;
-
-                // Write first bytes
-                tag = logic.GetID3Tag(fileName);
-
-                // Write in GUI
-                WriteInfo(tag);
-            }
-        }
-
-        private void WriteInfo(ID3Tag tag)
-        {
-            // Clear listview box
-            listView1.Items.Clear();
-
-            // Write info to text boxes
-            versionTextBox.Text = $"ID3v2.{tag.Header.MajorVersion}.{tag.Header.RevisionNumber}";
-            unsynchronizationTextBox.Text = $"{tag.Header.UnsynchronisationFlag}";
-            extendedHeaderTextBox.Text = $"{tag.Header.ExtendedHeaderFlag}";
-            experimentalTextBox.Text = $"{tag.Header.ExperimentalIndicatorFlag}";
-            tagSizeTextBox.Text = $"{tag.Header.TagSize} bytes";
-
             // Iterate all the frames
             foreach (ID3Frame frame in tag.Frames)
             {
                 // Row item
-                string[] frameString = { frame.LongID != null ? frame.LongID : "", frame.GetDataString(), frame.ID };
-                var lvi = new ListViewItem(frameString);
-                listView1.Items.Add(lvi);
+                if (frame.ID == "TALB")
+                {
+                    albumTextBox.Text = frame.GetDataString();
+                } else if (frame.ID == "TIT2")
+                {
+                    songTextBox.Text = frame.GetDataString();
+                } else if (frame.ID == "TPE2")
+                {
+                    artistTextBox.Text = frame.GetDataString();
+                }
             }
         }
 
@@ -72,6 +51,53 @@ namespace GUI
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                // song var
+                ID3Tag tag = new ID3Tag();
+
+                // Get filename of selected file
+                string fileName = openFileDialog1.FileName;
+
+                // Write first bytes
+                tag = logic.GetID3Tag(fileName);
+
+                if (tag.Header.TagSize != 0)
+                {
+                    // Print in GUI
+                    PrintInfo(tag);
+                } else
+                {
+                    ClearTextBoxes();
+                    MessageBox.Show("The selected file has no valid ID3 tag.");
+                }
+           }
+        }
+
+        private void ClearTextBoxes()
+        {
+            artistTextBox.Clear();
+            albumTextBox.Clear();
+            songTextBox.Clear();
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
         {
 
         }

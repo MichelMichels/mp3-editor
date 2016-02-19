@@ -25,8 +25,13 @@ namespace DataEntities
         public int TagSize { get; set; }
 
         /**
-         * Constructor
+         * Constructors
          */
+        public ID3Header()
+        {
+            TagSize = 0;
+        }
+
         public ID3Header(byte[] bytes)
         {
             if(bytes.Length < 10)

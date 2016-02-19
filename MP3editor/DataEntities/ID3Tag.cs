@@ -36,12 +36,14 @@ namespace DataEntities
         // save ID3 frames
         public List<ID3Frame> Frames { get; set; }
 
-
         /**
          * Constructor
          */
         public ID3Tag()
         {
+            // Properties
+            Header = new ID3Header();
+            ExtendedHeader = new ID3ExtendedHeader();
             Frames = new List<ID3Frame>();
         }
 
