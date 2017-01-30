@@ -48,6 +48,10 @@
       <Project>{4e385d10-1caa-4394-9fb1-3a1765380839}</Project>
       <Name>DataAccessImplementation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataAccessInterface\DataAccessInterface.csproj">
+      <Project>{b7d5a62b-65d3-441a-bde9-d7f143bbb58d}</Project>
+      <Name>DataAccessInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataEntities\DataEntities.csproj">
       <Project>{4cef6f38-3af1-46da-a25e-213282783693}</Project>
       <Name>DataEntities</Name>

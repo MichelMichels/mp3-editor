@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessImplementation;
+using DataAccessInterface;
 using DataEntities;
 
 namespace LogicImplementation
@@ -13,7 +14,7 @@ namespace LogicImplementation
         /**
          * Data handling var
          */
-        DataHandler data = new DataHandler();
+        IDataHandler data = new DataHandler();
         
         /**
          * Constants
@@ -33,6 +34,7 @@ namespace LogicImplementation
             tag.Bytes = data.GetID3TagBytes(fileName, 3);
             if(!tag.HasID3Identifier())
             {
+                // return empty ID3 tag when no identifier bytes are found
                 return new ID3Tag();
             }
 

@@ -23,6 +23,7 @@ namespace DataAccessImplementation
             // Array to store read bytes
             byte[] bytes = new byte[numberOfBytes];
 
+            // Open file
             using (var file = new BinaryReader(File.OpenRead(fileName)))
             {
                 // Read number of bytes

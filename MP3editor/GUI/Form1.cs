@@ -21,16 +21,19 @@ namespace GUI
             InitializeComponent();
         }
 
-        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
-        {
-
-        }
-
         private void PrintInfo(ID3Tag tag)
         {
-            // Iterate all the frames
             foreach (ID3Frame frame in tag.Frames)
             {
+                var row = new DataGridViewRow();
+                row.CreateCells(extraInfoDataGrid);
+                row.Cells[0].Value = frame.ID;
+                row.Cells[1].Value = frame.LongID;
+                row.Cells[2].Value = frame.GetDataString();
+                row.Cells[3].Value = frame.Size;
+                extraInfoDataGrid.Rows.Add(row);
+            }
+                    /*
                 // Row item
                 if (frame.ID == "TALB")
                 {
@@ -42,27 +45,8 @@ namespace GUI
                 {
                     artistTextBox.Text = frame.GetDataString();
                 }
-            }
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
+                */
+             
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -98,6 +82,11 @@ namespace GUI
         }
 
         private void saveButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
         {
 
         }
